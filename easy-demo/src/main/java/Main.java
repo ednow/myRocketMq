@@ -4,21 +4,16 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.client.producer.MessageQueueSelector;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 /**
  *  <a href="https://github.com/apache/rocketmq/blob/master/docs/cn/RocketMQ_Example.md">代码来源</a>
+ *  <a href="https://raw.githubusercontent.com/ednow/cloudimg/main/githubio/20220906225441.png">代码输出结果</a>
  */
 public class Main {
     public static class SyncProducer {
@@ -30,7 +25,7 @@ public class Main {
             producer.setSendMsgTimeout(60000);
             // 启动Producer实例
             producer.start();
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 10; i++) {
                 // 创建消息，并指定Topic，Tag和消息体
                 Message msg = new Message("TopicTest" /* Topic */,
                         "TagA" /* Tag */,
@@ -60,9 +55,9 @@ public class Main {
             consumer.subscribe("TopicTest", "*");
             // 注册回调实现类来处理从broker拉取回来的消息
             consumer.registerMessageListener(new MessageListenerConcurrently() {
-//                @Override
                 public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                     System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+                    System.out.printf("新消息是啥: %s %n", new String(msgs.get(0).getBody()));
                     // 标记该消息已经被成功消费
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 }
