@@ -27,6 +27,7 @@ public class Main {
             DefaultMQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
             // 设置NameServer的地址
             producer.setNamesrvAddr("ednow.com:49159");
+            producer.setSendMsgTimeout(60000);
             // 启动Producer实例
             producer.start();
             for (int i = 0; i < 100; i++) {
