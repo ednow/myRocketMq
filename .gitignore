@@ -1,2 +1,6 @@
 # 忽略idea配置文件
 *.iml
+.idea
+
+# idea 编译的文件
+target
